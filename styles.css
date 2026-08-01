@@ -18,4 +18,6 @@ h1 { margin: 0; font-size: 2rem; letter-spacing: .08em; } h2 { margin: 0; font-s
 .text-button { border: 0; background: transparent; padding: 10px 2px; font-weight: 700; }
 .danger { color: #9d3e37; }
 .exercise-editor { grid-template-columns: minmax(0, 1fr) 56px 24px 56px 26px; gap: 6px; }
+.custom-exercise { display: grid; gap: 7px; }.custom-exercise-fields { display: grid; grid-template-columns: minmax(0, 1fr) 58px 54px 52px auto; gap: 6px; align-items: center; }.custom-exercise-fields input, .custom-exercise-fields select { min-width: 0; padding: 9px 7px; }.custom-exercise-fields .secondary-button { padding: 10px 11px; }
+@media (max-width: 390px) { .custom-exercise-fields { grid-template-columns: minmax(0, 1fr) 52px 48px 48px auto; gap: 4px; }.custom-exercise-fields input, .custom-exercise-fields select { padding: 9px 4px; font-size: .84rem; }.custom-exercise-fields .secondary-button { padding: 10px 8px; } }
 @media (min-width: 651px) { .sheet { border-radius: 24px; margin: 8vh auto; min-height: 0; max-width: 560px; }.sheet-dialog { margin: auto; } }
