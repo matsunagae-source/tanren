@@ -27,6 +27,7 @@ function formatDate(date) { return new Intl.DateTimeFormat('ja-JP', { month: 'lo
 
 function render() {
   $('#datePicker').value = activeDate;
+  $('#dateButton').textContent = formatDate(activeDate);
   const dayRecords = records().filter((r) => r.date === activeDate).sort((a, b) => a.time.localeCompare(b.time));
   $('#recordCount').textContent = dayRecords.length ? `${dayRecords.length}件` : '';
   const root = $('#records'); root.innerHTML = '';
@@ -75,5 +76,6 @@ $('#deleteMealButton').onclick = () => { const recordId = $('#mealId').value; if
 $('#deleteWorkoutButton').onclick = () => { const recordId = $('#workoutEditId').value; if (recordId && confirm('このトレーニング記録を削除しますか？')) saveRecords(records().filter((record) => record.id !== recordId)); $('#workoutDialog').close(); };
 $('#records').onclick = (e) => { const button = e.target.closest('[data-edit]'); if (!button) return; const record = records().find((x) => x.id === button.dataset.edit); if (record.type === 'meal') openMeal(record.mealType, record); else openWorkout(record); };
 $('#datePicker').onchange = (event) => { if (event.target.value) { activeDate = event.target.value; render(); } };
+$('#dateButton').onclick = () => { const picker = $('#datePicker'); if (typeof picker.showPicker === 'function') picker.showPicker(); else picker.click(); };
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 render();
