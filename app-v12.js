@@ -134,6 +134,7 @@ document.querySelectorAll('[data-action="meal"]').forEach((button) => button.onc
 $('[data-action="workout"]').onclick = () => openWorkout();
 $('#showHistoryButton').onclick = showHistory;
 $('#showMealHistoryButton').onclick = showMealHistory;
+$('#homeLink').onclick = (event) => { event.preventDefault(); showRecord(); };
 $('#backToRecordButton').onclick = showRecord;
 $('#backFromMealHistoryButton').onclick = showRecord;
 $('#addExerciseButton').onclick = addExercise;
