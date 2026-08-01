@@ -41,6 +41,7 @@
         <div id="records" class="records"></div>
       </section>
       <button id="showHistoryButton" class="history-link" type="button">トレーニング履歴を見る</button>
+      <button id="showMealHistoryButton" class="history-link" type="button">食事履歴を見る</button>
     </main>
 
     <main id="historyView" class="app-shell history-view" hidden>
@@ -58,6 +59,24 @@
       <section class="history-section" aria-labelledby="recentTrainingHeading">
         <h2 id="recentTrainingHeading">最近7日のトレーニング</h2>
         <div id="recentTraining" class="training-history"></div>
+      </section>
+    </main>
+
+    <main id="mealHistoryView" class="app-shell history-view" hidden>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">食べたものを振り返る</p>
+          <h1>食事履歴</h1>
+        </div>
+        <button id="backFromMealHistoryButton" class="back-button" type="button">記録する</button>
+      </header>
+      <section class="history-section" aria-labelledby="todayMealHeading">
+        <h2 id="todayMealHeading">今日の食事</h2>
+        <div id="todayMeals" class="training-history"></div>
+      </section>
+      <section class="history-section" aria-labelledby="recentMealHeading">
+        <h2 id="recentMealHeading">最近7日の食事</h2>
+        <div id="recentMeals" class="training-history"></div>
       </section>
     </main>
 
@@ -123,6 +142,6 @@
     <template id="emptyTemplate">
       <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
     </template>
-    <script src="./app.js?v=7"></script>
+    <script src="./app.js?v=8"></script>
   </body>
 </html>
