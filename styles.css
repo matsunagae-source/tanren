@@ -1,13 +1,14 @@
 :root { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; color: #1c2723; background: #f6f4ee; }
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
-.app-shell { max-width: 650px; margin: auto; padding: max(24px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); }
+.app-shell { width: 100%; max-width: 650px; margin: auto; padding: max(24px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); overflow: hidden; }
 .topbar, .section-heading, .sheet-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .eyebrow { color: #68756f; font-size: .78rem; margin: 0 0 3px; letter-spacing: .08em; }
 h1 { margin: 0; font-size: 2rem; letter-spacing: .08em; } h2 { margin: 0; font-size: 1.05rem; }
-.date-button { border: 0; border-radius: 12px; background: #e6e8df; color: #294136; padding: 10px 12px; font-weight: 700; }
+.date-button { flex: 0 0 auto; border: 0; border-radius: 12px; background: #e6e8df; color: #294136; padding: 10px 12px; font-weight: 700; min-height: 40px; white-space: nowrap; }
+.visually-hidden { position: fixed; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .quick-actions { margin-top: 34px; }.action-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 12px; }
 .action-card { border: 0; min-height: 74px; border-radius: 16px; background: #fff; color: #274236; box-shadow: 0 3px 12px rgba(24, 52, 43, .08); font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
 .action-card span { font-size: .76rem; color: #74867d; }.action-card.workout { grid-column: span 4; background: #193c31; color: #fff; flex-direction: row; font-size: 1rem; }.action-card.workout span { font-size: 1.3rem; color: #e5b86c; }
