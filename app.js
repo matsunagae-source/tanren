@@ -25,6 +25,8 @@ function saveRecords(next) { localStorage.setItem(STORAGE_KEY, JSON.stringify(ne
 function foods() { return JSON.parse(localStorage.getItem(FOODS_KEY) || JSON.stringify(defaultFoods)); }
 function saveFoods(next) { localStorage.setItem(FOODS_KEY, JSON.stringify([...new Set(next)])); }
 function formatDate(date) { return new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }).format(new Date(`${date}T12:00:00`)); }
+function dateBefore(days) { const date = new Date(`${localDate()}T12:00:00`); date.setDate(date.getDate() - days); return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(date); }
+function workoutSummary(record) { return record.items.map((item) => `${item.name} ${item.amount}${item.unit}×${item.sets}`).join('、'); }
 
 function render() {
   $('#datePicker').value = activeDate;
@@ -34,11 +36,29 @@ function render() {
   if (!dayRecords.length) { root.append($('#emptyTemplate').content.cloneNode(true)); return; }
   dayRecords.forEach((record) => {
     const card = document.createElement('article'); card.className = 'record-card';
-    const summary = record.type === 'meal' ? record.items.join('、') : record.items.map((x) => `${x.name} ${x.amount}${x.unit}×${x.sets}`).join('、');
+    const summary = record.type === 'meal' ? record.items.join('、') : workoutSummary(record);
     card.innerHTML = `<div class="record-time">${record.time}</div><div class="record-content"><div class="record-kind">${record.type === 'meal' ? record.mealType : 'トレーニング'}</div><div class="record-summary">${summary}</div></div><button class="record-menu" aria-label="編集" data-edit="${record.id}">⋯</button>`;
     root.append(card);
   });
 }
+function renderTrainingHistory() {
+  const allWorkouts = records().filter((record) => record.type === 'workout');
+  const today = localDate();
+  const renderDays = (root, dates, emptyText) => {
+    root.innerHTML = '';
+    const groups = dates.map((date) => ({ date, items: allWorkouts.filter((record) => record.date === date) })).filter((group) => group.items.length);
+    if (!groups.length) { root.innerHTML = `<p class="training-empty">${emptyText}</p>`; return; }
+    groups.forEach((group) => {
+      const card = document.createElement('article'); card.className = 'training-day';
+      card.innerHTML = `<h3>${formatDate(group.date)}</h3><p class="training-summary">${group.items.map(workoutSummary).join('、')}</p>`;
+      root.append(card);
+    });
+  };
+  renderDays($('#todayTraining'), [today], '今日はまだトレーニングを記録していません。');
+  renderDays($('#recentTraining'), Array.from({ length: 7 }, (_, index) => dateBefore(index + 1)), '最近7日間のトレーニング記録はありません。');
+}
+function showHistory() { $('#historyView').hidden = false; document.querySelector('main.app-shell:not(.history-view)').hidden = true; renderTrainingHistory(); window.scrollTo(0, 0); }
+function showRecord() { $('#historyView').hidden = true; document.querySelector('main.app-shell:not(.history-view)').hidden = false; window.scrollTo(0, 0); }
 
 function openMeal(mealType, existing) {
   $('#mealForm').reset(); mealItems = existing ? [...existing.items] : [];
@@ -78,6 +98,8 @@ function renderWorkoutChoices() {
 
 document.querySelectorAll('[data-action="meal"]').forEach((button) => button.onclick = () => openMeal(button.dataset.mealType));
 $('[data-action="workout"]').onclick = () => openWorkout();
+$('#showHistoryButton').onclick = showHistory;
+$('#backToRecordButton').onclick = showRecord;
 $('#addExerciseButton').onclick = addExercise;
 $('#customExerciseName').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addExercise(); } });
 $('#addFoodButton').onclick = addFood; $('#foodInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addFood(); } });
