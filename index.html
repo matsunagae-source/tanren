@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#193c31" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="タンレン" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>タンレン</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">日々を積み上げる記録</p>
+          <h1>タンレン</h1>
+        </div>
+        <button class="date-button" id="dateButton" aria-label="表示する日付を選ぶ"></button>
+      </header>
+
+      <section class="quick-actions" aria-label="新しい記録">
+        <h2>記録する</h2>
+        <div class="action-grid">
+          <button class="action-card meal" data-action="meal" data-meal-type="朝食"><span>朝</span>朝食</button>
+          <button class="action-card meal" data-action="meal" data-meal-type="昼食"><span>昼</span>昼食</button>
+          <button class="action-card meal" data-action="meal" data-meal-type="夕食"><span>夜</span>夕食</button>
+          <button class="action-card meal" data-action="meal" data-meal-type="間食"><span>間</span>間食</button>
+          <button class="action-card workout" data-action="workout"><span>＋</span>トレーニング</button>
+        </div>
+      </section>
+
+      <section class="daily-log" aria-labelledby="daily-log-heading">
+        <div class="section-heading">
+          <h2 id="daily-log-heading">この日の記録</h2>
+          <span id="recordCount" class="count-pill"></span>
+        </div>
+        <div id="records" class="records"></div>
+      </section>
+    </main>
+
+    <dialog id="mealDialog" class="sheet-dialog">
+      <form method="dialog" class="sheet" id="mealForm">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title-row">
+          <h2 id="mealDialogTitle">食事を記録</h2>
+          <button class="icon-button" type="button" data-close="mealDialog" aria-label="閉じる">×</button>
+        </div>
+        <input id="mealId" type="hidden" />
+        <label>食事区分
+          <select id="mealType">
+            <option>朝食</option><option>昼食</option><option>夕食</option><option>間食</option>
+          </select>
+        </label>
+        <label>摂取時刻
+          <input id="mealTime" type="time" required />
+        </label>
+        <div>
+          <p class="label">よく食べるもの</p>
+          <div id="foodSuggestions" class="chip-list"></div>
+        </div>
+        <label>食品・料理を追加
+          <div class="input-with-button">
+            <input id="foodInput" type="text" autocomplete="off" placeholder="例：プロテイン" />
+            <button type="button" id="addFoodButton" class="secondary-button">追加</button>
+          </div>
+        </label>
+        <div id="selectedFoods" class="selected-list"></div>
+        <div class="form-actions"><button type="button" id="deleteMealButton" class="text-button danger" hidden>この食事を削除</button><button type="submit" class="primary-button">食事を保存</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="workoutDialog" class="sheet-dialog">
+      <form method="dialog" class="sheet" id="workoutForm">
+        <div class="sheet-handle"></div>
+        <div class="sheet-title-row">
+          <h2 id="workoutDialogTitle">トレーニングを記録</h2>
+          <button class="icon-button" type="button" data-close="workoutDialog" aria-label="閉じる">×</button>
+        </div>
+        <input id="workoutEditId" type="hidden" />
+        <label>実施時刻
+          <input id="workoutTime" type="time" required />
+        </label>
+        <p class="label">種目を追加</p>
+        <div id="workoutSuggestions" class="workout-options"></div>
+        <div id="selectedExercises" class="selected-list"></div>
+        <div class="form-actions"><button type="button" id="deleteWorkoutButton" class="text-button danger" hidden>このトレーニングを削除</button><button type="submit" class="primary-button">トレーニングを保存</button></div>
+      </form>
+    </dialog>
+
+    <template id="emptyTemplate">
+      <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
+    </template>
+    <script src="./app.js"></script>
+  </body>
+</html>
