@@ -1,9 +1,10 @@
 :root { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; color: #1c2723; background: #f6f4ee; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; overflow-x: hidden; }
+.global-header { position: fixed; z-index: 10; top: 0; left: 0; right: 0; height: calc(52px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 18px 0; display: flex; align-items: center; background: rgba(253, 251, 246, .94); border-bottom: 1px solid #e2e3db; backdrop-filter: blur(12px); }.global-header a { color: #193c31; text-decoration: none; font-size: 1.05rem; font-weight: 800; letter-spacing: .08em; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
-.app-shell { width: 100%; max-width: 650px; margin: auto; padding: max(24px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); overflow: hidden; }
+.app-shell { width: 100%; max-width: 650px; margin: auto; padding: calc(76px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom)); overflow: hidden; }
 .topbar, .section-heading, .sheet-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .eyebrow { color: #68756f; font-size: .78rem; margin: 0 0 3px; letter-spacing: .08em; }
 h1 { margin: 0; font-size: 2rem; letter-spacing: .08em; } h2 { margin: 0; font-size: 1.05rem; }
