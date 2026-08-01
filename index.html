@@ -40,6 +40,25 @@
         </div>
         <div id="records" class="records"></div>
       </section>
+      <button id="showHistoryButton" class="history-link" type="button">トレーニング履歴を見る</button>
+    </main>
+
+    <main id="historyView" class="app-shell history-view" hidden>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">積み上げを振り返る</p>
+          <h1>トレーニング</h1>
+        </div>
+        <button id="backToRecordButton" class="back-button" type="button">記録する</button>
+      </header>
+      <section class="history-section" aria-labelledby="todayTrainingHeading">
+        <h2 id="todayTrainingHeading">今日のトレーニング</h2>
+        <div id="todayTraining" class="training-history"></div>
+      </section>
+      <section class="history-section" aria-labelledby="recentTrainingHeading">
+        <h2 id="recentTrainingHeading">最近7日のトレーニング</h2>
+        <div id="recentTraining" class="training-history"></div>
+      </section>
     </main>
 
     <dialog id="mealDialog" class="sheet-dialog">
@@ -104,6 +123,6 @@
     <template id="emptyTemplate">
       <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
     </template>
-    <script src="./app.js?v=6"></script>
+    <script src="./app.js?v=7"></script>
   </body>
 </html>
