@@ -130,30 +130,6 @@
       <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
     </template>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="./app-v14.js"></script>
-    <script>
-      (() => {
-        const mealButton = document.getElementById('showMealHistoryButton');
-        const backButton = document.getElementById('backFromMealHistoryButton');
-        const mealView = document.getElementById('mealHistoryView');
-        const recordView = document.querySelector('main.app-shell:not(.history-view)');
-        const showMealHistory = () => {
-          document.querySelectorAll('main.app-shell').forEach((view) => { view.hidden = view !== mealView; });
-          const records = JSON.parse(localStorage.getItem('tanren.records.v1') || '[]').filter((record) => record.type === 'meal');
-          const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(new Date());
-          const dateBefore = (days) => { const date = new Date(`${today}T12:00:00`); date.setDate(date.getDate() - days); return new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Tokyo' }).format(date); };
-          const label = (date) => new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }).format(new Date(`${date}T12:00:00`));
-          const render = (id, dates, empty) => {
-            const root = document.getElementById(id); const groups = dates.map((date) => ({ date, items: records.filter((record) => record.date === date) })).filter((group) => group.items.length);
-            root.innerHTML = groups.length ? groups.map((group) => `<article class="training-day"><h3>${label(group.date)}</h3><p class="training-summary">${group.items.map((meal) => `${meal.mealType}：${meal.items.join('、')}`).join('／')}</p></article>`).join('') : `<p class="training-empty">${empty}</p>`;
-          };
-          render('todayMeals', [today], '今日はまだ食事を記録していません。');
-          render('recentMeals', Array.from({ length: 7 }, (_, index) => dateBefore(index + 1)), '最近7日間の食事記録はありません。');
-          window.scrollTo(0, 0);
-        };
-        mealButton.onclick = showMealHistory;
-        backButton.onclick = () => { mealView.hidden = true; recordView.hidden = false; window.scrollTo(0, 0); };
-      })();
-    </script>
+    <script src="./app-v15.js"></script>
   </body>
 </html>
