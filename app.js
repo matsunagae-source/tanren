@@ -77,5 +77,8 @@ $('#deleteWorkoutButton').onclick = () => { const recordId = $('#workoutEditId')
 $('#records').onclick = (e) => { const button = e.target.closest('[data-edit]'); if (!button) return; const record = records().find((x) => x.id === button.dataset.edit); if (record.type === 'meal') openMeal(record.mealType, record); else openWorkout(record); };
 $('#datePicker').onchange = (event) => { if (event.target.value) { activeDate = event.target.value; render(); } };
 $('#dateButton').onclick = () => { const picker = $('#datePicker'); if (typeof picker.showPicker === 'function') picker.showPicker(); else picker.click(); };
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => registrations.forEach((registration) => registration.unregister()));
+  caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith('tanren-')).map((key) => caches.delete(key))));
+}
 render();
