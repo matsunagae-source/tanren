@@ -86,6 +86,16 @@
         </label>
         <p class="label">種目を追加</p>
         <div id="workoutSuggestions" class="workout-options"></div>
+        <div class="custom-exercise">
+          <p class="label">新しい種目を追加</p>
+          <div class="custom-exercise-fields">
+            <input id="customExerciseName" type="text" autocomplete="off" placeholder="例：ランニング" />
+            <input id="customExerciseAmount" type="number" inputmode="decimal" min="0" step="0.1" placeholder="量" />
+            <select id="customExerciseUnit" aria-label="単位"><option>回</option><option>秒</option><option>km</option></select>
+            <input id="customExerciseSets" type="number" inputmode="numeric" min="1" step="1" value="1" aria-label="セット数" />
+            <button type="button" id="addExerciseButton" class="secondary-button">追加</button>
+          </div>
+        </div>
         <div id="selectedExercises" class="selected-list"></div>
         <div class="form-actions"><button type="button" id="deleteWorkoutButton" class="text-button danger" hidden>このトレーニングを削除</button><button type="submit" class="primary-button">トレーニングを保存</button></div>
       </form>
@@ -94,6 +104,6 @@
     <template id="emptyTemplate">
       <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
     </template>
-    <script src="./app.js?v=5"></script>
+    <script src="./app.js?v=6"></script>
   </body>
 </html>
