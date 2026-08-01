@@ -26,7 +26,7 @@ function saveFoods(next) { localStorage.setItem(FOODS_KEY, JSON.stringify([...ne
 function formatDate(date) { return new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }).format(new Date(`${date}T12:00:00`)); }
 
 function render() {
-  $('#dateButton').textContent = formatDate(activeDate);
+  $('#datePicker').value = activeDate;
   const dayRecords = records().filter((r) => r.date === activeDate).sort((a, b) => a.time.localeCompare(b.time));
   $('#recordCount').textContent = dayRecords.length ? `${dayRecords.length}件` : '';
   const root = $('#records'); root.innerHTML = '';
@@ -74,6 +74,6 @@ document.querySelectorAll('[data-close]').forEach((button) => button.onclick = (
 $('#deleteMealButton').onclick = () => { const recordId = $('#mealId').value; if (recordId && confirm('この食事記録を削除しますか？')) saveRecords(records().filter((record) => record.id !== recordId)); $('#mealDialog').close(); };
 $('#deleteWorkoutButton').onclick = () => { const recordId = $('#workoutEditId').value; if (recordId && confirm('このトレーニング記録を削除しますか？')) saveRecords(records().filter((record) => record.id !== recordId)); $('#workoutDialog').close(); };
 $('#records').onclick = (e) => { const button = e.target.closest('[data-edit]'); if (!button) return; const record = records().find((x) => x.id === button.dataset.edit); if (record.type === 'meal') openMeal(record.mealType, record); else openWorkout(record); };
-$('#dateButton').onclick = () => { const picked = prompt('表示する日付を YYYY-MM-DD で入力してください', activeDate); if (/^\d{4}-\d{2}-\d{2}$/.test(picked || '')) { activeDate = picked; render(); } };
+$('#datePicker').onchange = (event) => { if (event.target.value) { activeDate = event.target.value; render(); } };
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
 render();
