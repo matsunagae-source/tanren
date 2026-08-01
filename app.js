@@ -9,6 +9,7 @@ const exerciseCatalog = [
   { name: 'ロシアンツイスト', amount: 30, unit: '回', sets: 2 },
   { name: 'ヒールタッチ', amount: 30, unit: '回', sets: 2 },
   { name: 'レッグレイズキープ', amount: 30, unit: '秒', sets: 2 },
+  { name: 'ランニング', amount: 5, unit: 'km', sets: 1 },
 ];
 const defaultFoods = ['トースト', 'プロテイン', 'コーヒー', '牛乳', 'ご飯', 'ゆで卵', 'ブロッコリー'];
 let activeDate = localDate();
@@ -58,15 +59,27 @@ function openWorkout(existing) {
   $('#workoutForm').reset(); workoutItems = existing ? structuredClone(existing.items) : [];
   $('#workoutEditId').value = existing?.id || ''; $('#workoutTime').value = existing?.time || currentTime(); $('#workoutDialogTitle').textContent = existing ? 'トレーニングを編集' : 'トレーニングを記録'; $('#deleteWorkoutButton').hidden = !existing; renderWorkoutChoices(); $('#workoutDialog').showModal();
 }
+function addExercise() {
+  const name = $('#customExerciseName').value.trim();
+  const amount = Number($('#customExerciseAmount').value);
+  const unit = $('#customExerciseUnit').value;
+  const sets = Number($('#customExerciseSets').value) || 1;
+  if (!name || Number.isNaN(amount) || amount <= 0) return;
+  workoutItems.push({ name, amount, unit, sets });
+  $('#customExerciseName').value = ''; $('#customExerciseAmount').value = ''; $('#customExerciseUnit').value = '回'; $('#customExerciseSets').value = '1';
+  renderWorkoutChoices();
+}
 function renderWorkoutChoices() {
   const choices = $('#workoutSuggestions'); choices.innerHTML = '';
   exerciseCatalog.filter((ex) => !workoutItems.some((item) => item.name === ex.name)).forEach((ex) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'workout-option'; b.innerHTML = `<strong>${ex.name}</strong><small>${ex.amount}${ex.unit} × ${ex.sets}</small>`; b.onclick = () => { workoutItems.push(structuredClone(ex)); renderWorkoutChoices(); }; choices.append(b); });
   const selected = $('#selectedExercises'); selected.innerHTML = '';
-  workoutItems.forEach((ex, index) => { const item = document.createElement('div'); item.className = 'selected-item'; item.innerHTML = `<div class="exercise-editor"><strong>${ex.name}</strong><input aria-label="${ex.name}の量" inputmode="numeric" value="${ex.amount}" data-field="amount" data-index="${index}"><span class="unit">${ex.unit}</span><input aria-label="${ex.name}のセット数" inputmode="numeric" value="${ex.sets}" data-field="sets" data-index="${index}"><button class="remove-button" type="button" aria-label="${ex.name}を削除">×</button></div>`; item.querySelectorAll('input').forEach((input) => input.onchange = () => { workoutItems[Number(input.dataset.index)][input.dataset.field] = Number(input.value) || 0; }); item.querySelector('button').onclick = () => { workoutItems.splice(index, 1); renderWorkoutChoices(); }; selected.append(item); });
+  workoutItems.forEach((ex, index) => { const item = document.createElement('div'); item.className = 'selected-item'; item.innerHTML = `<div class="exercise-editor"><strong>${ex.name}</strong><input aria-label="${ex.name}の量" type="number" inputmode="decimal" step="0.1" value="${ex.amount}" data-field="amount" data-index="${index}"><select aria-label="${ex.name}の単位" data-field="unit" data-index="${index}"><option${ex.unit === '回' ? ' selected' : ''}>回</option><option${ex.unit === '秒' ? ' selected' : ''}>秒</option><option${ex.unit === 'km' ? ' selected' : ''}>km</option></select><input aria-label="${ex.name}のセット数" type="number" inputmode="numeric" min="1" value="${ex.sets}" data-field="sets" data-index="${index}"><button class="remove-button" type="button" aria-label="${ex.name}を削除">×</button></div>`; item.querySelectorAll('input, select').forEach((input) => input.onchange = () => { workoutItems[Number(input.dataset.index)][input.dataset.field] = input.dataset.field === 'unit' ? input.value : Number(input.value) || 0; }); item.querySelector('button').onclick = () => { workoutItems.splice(index, 1); renderWorkoutChoices(); }; selected.append(item); });
 }
 
 document.querySelectorAll('[data-action="meal"]').forEach((button) => button.onclick = () => openMeal(button.dataset.mealType));
 $('[data-action="workout"]').onclick = () => openWorkout();
+$('#addExerciseButton').onclick = addExercise;
+$('#customExerciseName').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addExercise(); } });
 $('#addFoodButton').onclick = addFood; $('#foodInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addFood(); } });
 $('#mealForm').addEventListener('submit', (e) => { e.preventDefault(); if (!mealItems.length) return; const all = records(); const existingId = $('#mealId').value; const record = { id: existingId || id(), type: 'meal', date: activeDate, mealType: $('#mealType').value, time: $('#mealTime').value, items: [...mealItems], updatedAt: new Date().toISOString() }; saveFoods([...foods(), ...mealItems]); saveRecords(existingId ? all.map((x) => x.id === existingId ? record : x) : [...all, record]); $('#mealDialog').close(); });
 $('#workoutForm').addEventListener('submit', (e) => { e.preventDefault(); if (!workoutItems.length) return; const all = records(); const existingId = $('#workoutEditId').value; const record = { id: existingId || id(), type: 'workout', date: activeDate, time: $('#workoutTime').value, items: structuredClone(workoutItems), updatedAt: new Date().toISOString() }; saveRecords(existingId ? all.map((x) => x.id === existingId ? record : x) : [...all, record]); $('#workoutDialog').close(); });
