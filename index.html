@@ -35,7 +35,8 @@
         </div>
         <div id="records" class="records"></div>
       </section>
-      <button id="loadSheetsButton" class="history-link" type="button">Googleスプレッドシートから読み込む</button>
+      <button id="connectSheetsButton" class="history-link" type="button">Googleスプレッドシートに接続する</button>
+      <button id="loadSheetsButton" class="history-link" type="button" hidden>シートから読み込む</button>
       <p id="sheetsStatus" class="sync-status" aria-live="polite"></p>
       <button id="showHistoryButton" class="history-link" type="button">トレーニング履歴を見る</button>
       <button id="showMealHistoryButton" class="history-link" type="button">食事履歴を見る</button>
@@ -130,6 +131,6 @@
       <div class="empty-state"><p>まだ記録がありません。</p><small>食事かトレーニングを記録して、今日を積み上げましょう。</small></div>
     </template>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="./app-v15.js"></script>
+    <script src="./app-v16.js"></script>
   </body>
 </html>
